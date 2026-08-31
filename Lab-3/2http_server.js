@@ -18,6 +18,21 @@ const server=http.createServer((req,res)=>{
     }
     else if (url =="/data" && method =="GET") {
         res.end(JSON.stringify(userdata)) ;
+    } else if (url=="/create" && method=="POST") {
+        let body = "" ;
+        req.on("data",(chunk)=>{
+            body += chunk ;
+        })
+        req.on("end",()=> {
+          const newdata =JSON.parse(body) ;
+          const newuserdata = {
+            id : newdata.id ,
+            name:newdata.name,
+            email:newdata.email
+          }  
+          userdata.push(newuserdata)
+          res.end("")
+        })
     }
 })
 server.listen(3000,()=>{
