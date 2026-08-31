@@ -13,11 +13,11 @@ const server=http.createServer((req,res)=>{
     if(url=="/msg" && method == "GET"){
         res.end("This is welcome message from server");
     }
-    else if(url="/sys" && method == "GET"){
+    else if(url=="/sys" && method == "GET"){
         res.end("This is system information");
     }
     else if (url =="/data" && method =="GET") {
-        res.end(json.stringfy(userdata)) ;
+        res.end(JSON.stringify(userdata)) ;
     }
 })
 server.listen(3000,()=>{
