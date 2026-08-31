@@ -16,6 +16,9 @@ const server=http.createServer((req,res)=>{
     else if(url="/sys" && method == "GET"){
         res.end("This is system information");
     }
+    else if (url =="/data" && method =="GET") {
+        res.end(json.stringfy(userdata)) ;
+    }
 })
 server.listen(3000,()=>{
     console.log("Server is running on port number 3000");
