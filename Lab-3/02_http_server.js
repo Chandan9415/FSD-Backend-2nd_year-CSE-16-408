@@ -33,6 +33,8 @@ const server=http.createServer((req,res)=>{
           userdata.push(newuserdata)
           res.end("")
         })
+    }else if (url=="/users" && method == "GET") {
+        res.end(JSON.stringify(userdata)) ;
     }
 })
 server.listen(3000,()=>{

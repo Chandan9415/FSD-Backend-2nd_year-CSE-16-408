@@ -1,5 +1,5 @@
 import http from "http";
-const userdata =[{
+const userData =[{
     id : 101 ,
     name : "Abc" ,
     email : "cm@abes.call.in" 
@@ -24,17 +24,27 @@ const server=http.createServer((req,res)=>{
             body += chunk ;
         })
         req.on("end",()=> {
-          const newdata =JSON.parse(body) ;
-          const newuserdata = {
-            id : newdata.id ,
-            name:newdata.name,
-            email:newdata.email
+          const newData =JSON.parse(body) ;
+          const newuserData = {
+            id : newData.id ,
+            name:newData.name,
+            email:newData.email
           }  
-          userdata.push(newuserdata)
+          userData.push(newuserData)
           res.end("")
         })
+    }else if (url=="/users" && method == "GET") {
+        res.end(JSON.stringify(userData)) ;
+    }else if (url.startsWith("/users/") && method =="GET") {
+        const id = url.split("/")[2] ;
+        console.log(id) ;
+        const user = userData.find((u) => u.id == id) ;
+        if (!user){
+            return res.end("User Not found ") ;
+        }
+        res.end(JSON.stringify(user));
     }
 })
-server.listen(3000,()=>{
-    console.log("Server is running on port number 3000");
+server.listen(4000,()=>{
+    console.log("Server is running on port number 4000");
 })
