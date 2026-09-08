@@ -17,7 +17,7 @@ const server=http.createServer((req,res)=>{
         res.end("This is system information");
     }
     else if (url =="/data" && method =="GET") {
-        res.end(JSON.stringify(userdata)) ;
+        res.end(JSON.stringify(userData)) ;
     } else if (url=="/create" && method=="POST") {
         let body = "" ;
         req.on("data",(chunk)=>{
