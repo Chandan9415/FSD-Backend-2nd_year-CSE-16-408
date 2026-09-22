@@ -1,1 +1,0 @@
-// Make a custum postman(ApI Tester) application with all methods 
