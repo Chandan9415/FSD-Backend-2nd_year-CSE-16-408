@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../App.css";
-
 function Postman() {
     const [method, setMethod] = useState("GET");
     const [url, setUrl] = useState("");
@@ -8,17 +7,14 @@ function Postman() {
     const [response, setResponse] = useState("");
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
-
     const sendRequest = async () => {
         setLoading(true);
         setResponse("");
         setStatus("");
-
         try {
             const options = {
                 method: method
             };
-
             if (
                 method === "POST" ||
                 method === "PUT" ||
@@ -32,13 +28,10 @@ function Postman() {
                     options.body = body;
                 }
             }
-
             const startTime = Date.now();
-
             const res = await fetch(url, options);
-
             const endTime = Date.now();
-
+// this is good 
             setStatus(
                 `${res.status} ${res.statusText} | ${endTime - startTime} ms`
             );
