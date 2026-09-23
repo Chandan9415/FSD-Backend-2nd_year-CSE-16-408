@@ -1,5 +1,7 @@
 import { useState } from "react";
+import axios from "axios";
 import "../App.css";
+
 function Postman() {
     const [method, setMethod] = useState("GET");
     const [url, setUrl] = useState("");
@@ -7,54 +9,59 @@ function Postman() {
     const [response, setResponse] = useState("");
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
+
     const sendRequest = async () => {
         setLoading(true);
         setResponse("");
         setStatus("");
+
         try {
-            const options = {
-                method: method
-            };
+            let data;
+
             if (
                 method === "POST" ||
                 method === "PUT" ||
                 method === "PATCH"
             ) {
-                options.headers = {
-                    "Content-Type": "application/json"
-                };
-
                 if (body.trim() !== "") {
-                    options.body = body;
+                    data = JSON.parse(body);
                 }
             }
+
             const startTime = Date.now();
-            const res = await fetch(url, options);
+
+            const res = await axios({
+                method: method,
+                url: url,
+                data: data,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                validateStatus: () => true
+            });
+
             const endTime = Date.now();
-// this is good 
+
             setStatus(
                 `${res.status} ${res.statusText} | ${endTime - startTime} ms`
             );
 
-            const contentType = res.headers.get("content-type");
-
-            if (
-                contentType &&
-                contentType.includes("application/json")
-            ) {
-                const data = await res.json();
-
+            if (typeof res.data === "object") {
                 setResponse(
-                    JSON.stringify(data, null, 2)
+                    JSON.stringify(res.data, null, 2)
                 );
             } else {
-                const data = await res.text();
-
-                setResponse(data);
+                setResponse(res.data);
             }
+
         } catch (error) {
-            setStatus("Request Error");
-            setResponse(error.message);
+            if (error instanceof SyntaxError) {
+                setStatus("Invalid JSON");
+                setResponse("Please enter valid JSON in Request Body.");
+            } else {
+                setStatus("Request Error");
+                setResponse(error.message);
+            }
         }
 
         setLoading(false);
